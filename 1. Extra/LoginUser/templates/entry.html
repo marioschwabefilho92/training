@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<h2>{{ the_title }}</h2>
+
+<form method="POST" action="/showlog">
+    <table>
+        <p>Use this form to login:</p>
+        <tr>
+            <td>Username:</td>
+            <td><input name='username' type="text" width="60"></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input name='password' type="text" width="60"></td>
+        </tr>
+    </table>
+    <p>When you´re ready, cleck this button:</p>
+    <p><input value='LOGIN' type="submit"></p>
+</form>
+
+{% endblock %}
