@@ -19,7 +19,9 @@ class MainWindown(tk.Canvas):
     relx = 0
     rely = 0
 
-    def correct_positioning(self, width, height, place_right) -> None:
+    def correct_positioning(
+        self, width: float, height: float, place_right: bool
+    ) -> None:
         if place_right == True:
             self.rely = self.canvas_height
             self.relx += width
@@ -33,23 +35,23 @@ class MainWindown(tk.Canvas):
         self.create_widgets()
 
     def create_widgets(self):
-        self.canvas_for_frames = tk.Canvas(self)
+        self.canvas_for_frames = tk.Canvas(master=self)
         self.BT_add = tk.Button(
-            self,
+            master=self,
             text="Add Card Frame",
             command=self.create_card,
         )
         self.BT_del = tk.Button(
-            self,
+            master=self,
             text="Delete Card Frame",
             command=self.delete_card,
         )
         self.BT_1 = tk.Button(
-            self,
+            master=self,
             text="BT1",
         )
         self.BT_2 = tk.Button(
-            self,
+            master=self,
             text="BT2",
         )
         self.place_widgets()
@@ -113,18 +115,20 @@ class MainWindown(tk.Canvas):
         else:
             print("CardFrame was not initiated, add card frame")
 
-    def correct_frame_positioning(self):
-        pass
-
 
 class CardFrame(tk.Frame):
     resources = ["AGI", "KUNI"]
+    list_widgets = []
     button_width = 1
     button_height = 0.2
+    option_menu_width = 1
+    option_menu_height = 0.2
     relx = 0.0
     rely = 0.0
 
-    def correct_positioning(self, width, height, place_right) -> None:
+    def correct_positioning(
+        self, width: float, height: float, place_right: bool
+    ) -> None:
         if place_right == True:
             self.rely = 0
             self.relx += width
@@ -138,20 +142,48 @@ class CardFrame(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        self.resource = tk.StringVar()
-        self.resource_menu = tk.OptionMenu(self, self.resource, *self.resources)
-        self.resource_menu.pack()
-        self.resource.trace_add("write", self.on_change_selected_resource)
+        self.selected_resource = tk.StringVar()
+        self.resource_menu = tk.OptionMenu(
+            self, self.selected_resource, *self.resources
+        )
+        self.place_widgets()
+        self.trace_variables()
 
-    def on_change_selected_resource(self, var, indx, mode):
-        tinta = self.resource.get()
+    def place_widgets(self):
+        self.resource_menu.place(
+            relx=self.relx,
+            rely=self.rely,
+            relwidth=self.option_menu_width,
+            relheight=self.option_menu_height,
+        )
+        self.correct_positioning(
+            width=self.option_menu_width,
+            height=self.option_menu_height,
+            place_right=False,
+        )
+
+    def trace_variables(self):
+        self.selected_resource.trace_add(
+            mode="write",
+            callback=lambda *args, selected_resource=self.selected_resource: self.validate(
+                selected_resource
+            ),
+        )
+
+    def validate(self, selected_resource):
+        selected_resource = selected_resource.get()
+        print(selected_resource)
+        self.on_change_selected_resource()
+
+    def on_change_selected_resource(self):
+        tinta = self.selected_resource.get()
         if tinta == self.resources[0]:
             self.create_agi()
         elif tinta == self.resources[1]:
             self.create_kuni()
 
     def create_agi(self):
-        Bt_agi = tk.Button(self, text="BT agi")
+        Bt_agi = tk.Button(self, text="BT agi", command=self.print_it)
         Bt_agi.place(
             relx=self.relx,
             rely=self.rely + 0.2,
@@ -160,7 +192,7 @@ class CardFrame(tk.Frame):
         )
 
     def create_kuni(self):
-        Bt_agi = tk.Button(self, text="BT Kuni")
+        Bt_agi = tk.Button(self, text="BT Kuni", command=self.print_it)
         Bt_agi.place(
             relx=self.relx,
             rely=self.rely + 0.2,
@@ -168,13 +200,8 @@ class CardFrame(tk.Frame):
             relheight=self.button_height,
         )
 
-    def place_widgets(self):
-        self.resource_menu.place(
-            relx=self.relx,
-            rely=self.rely,
-            relwidth=self.button_width,
-            relheight=self.button_height,
-        )
+    def print_it(self):
+        print(self.winfo_children()[0])
 
 
 def main():
