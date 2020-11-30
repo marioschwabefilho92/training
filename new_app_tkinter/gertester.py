@@ -16,6 +16,10 @@ class MainWindown(tk.Canvas):
     button_height = 0.1
     canvas_width = 1
     canvas_height = 0.8
+    label_width = 0.3
+    label_height = 0.1
+    entry_width = 0.3
+    entry_height = 0.1
     relx = 0
     rely = 0
 
@@ -33,27 +37,34 @@ class MainWindown(tk.Canvas):
         self.pack(fill="both", expand=True)
         self.config(bg="black")
         self.create_widgets()
+        self.create_card()
 
     def create_widgets(self):
         self.canvas_for_frames = tk.Canvas(master=self)
-        self.BT_add = tk.Button(
+        self.bt_add = tk.Button(
             master=self,
             text="Add Card Frame",
             command=self.create_card,
         )
-        self.BT_del = tk.Button(
+        self.bt_del = tk.Button(
             master=self,
             text="Delete Card Frame",
             command=self.delete_card,
         )
-        self.BT_1 = tk.Button(
+        self.bt_mes = tk.Button(
             master=self,
-            text="BT1",
+            text="Measure",
+            command=self.validate_data,
         )
-        self.BT_2 = tk.Button(
+        self.bt_stop = tk.Button(
             master=self,
-            text="BT2",
+            text="Stop Measure",
+            command=self.stop_measure,
         )
+        self.lb_smp = tk.Label(master=self, text="Samples")
+        self.ent_smp = tk.Entry(master=self)
+        self.lb_f_name = tk.Label(master=self, text="File Name")
+        self.ent_f_name = tk.Entry(master=self)
         self.place_widgets()
 
     def place_widgets(self):
@@ -66,7 +77,7 @@ class MainWindown(tk.Canvas):
         self.correct_positioning(
             width=self.canvas_width, height=self.canvas_height, place_right=False
         )
-        self.BT_add.place(
+        self.bt_add.place(
             relx=self.relx,
             rely=self.rely,
             relwidth=self.button_width,
@@ -75,7 +86,7 @@ class MainWindown(tk.Canvas):
         self.correct_positioning(
             width=self.button_width, height=self.button_height, place_right=False
         )
-        self.BT_del.place(
+        self.bt_del.place(
             relx=self.relx,
             rely=self.rely,
             relwidth=self.button_width,
@@ -84,7 +95,7 @@ class MainWindown(tk.Canvas):
         self.correct_positioning(
             width=self.button_width, height=self.button_height, place_right=True
         )
-        self.BT_1.place(
+        self.bt_mes.place(
             relx=self.relx,
             rely=self.rely,
             relwidth=self.button_width,
@@ -93,11 +104,50 @@ class MainWindown(tk.Canvas):
         self.correct_positioning(
             width=self.button_width, height=self.button_height, place_right=False
         )
-        self.BT_2.place(
+        self.bt_stop.place(
             relx=self.relx,
             rely=self.rely,
             relwidth=self.button_width,
             relheight=self.button_height,
+        )
+        self.correct_positioning(
+            width=self.button_width, height=self.button_height, place_right=True
+        )
+        self.lb_smp.place(
+            relx=self.relx,
+            rely=self.rely,
+            relwidth=self.label_width,
+            relheight=self.label_height,
+        )
+        self.correct_positioning(
+            width=self.label_width, height=self.label_height, place_right=False
+        )
+        self.ent_smp.place(
+            relx=self.relx,
+            rely=self.rely,
+            relwidth=self.entry_width,
+            relheight=self.entry_height,
+        )
+        self.correct_positioning(
+            width=self.entry_width, height=self.entry_height, place_right=True
+        )
+        self.lb_f_name.place(
+            relx=self.relx,
+            rely=self.rely,
+            relwidth=self.label_width,
+            relheight=self.label_height,
+        )
+        self.correct_positioning(
+            width=self.label_width, height=self.label_height, place_right=False
+        )
+        self.ent_f_name.place(
+            relx=self.relx,
+            rely=self.rely,
+            relwidth=self.entry_width,
+            relheight=self.entry_height,
+        )
+        self.correct_positioning(
+            width=self.entry_width, height=self.entry_height, place_right=False
         )
 
     def create_card(self):
@@ -115,9 +165,17 @@ class MainWindown(tk.Canvas):
         else:
             print("CardFrame was not initiated, add card frame")
 
+    def validate_data(self):
+        print("Implement validate_data")
+        pass
+
+    def stop_measure(self):
+        print("Implement stop_measure")
+        pass
+
 
 class CardFrame(tk.Frame):
-    resources = ["AGI", "KUNI"]
+    resources = ["Agilent 34410A", "ClimaEvent 340C"]
     list_widgets = []
     button_width = 1
     button_height = 0.2
@@ -178,15 +236,26 @@ class CardFrame(tk.Frame):
     def on_change_selected_resource(self):
         tinta = self.selected_resource.get()
         if tinta == self.resources[0]:
-            self.create_agi()
+            self.create_agilent()
         elif tinta == self.resources[1]:
             self.create_kuni()
 
-    def create_agi(self):
-        Bt_agi = tk.Button(self, text="BT agi", command=self.print_it)
-        Bt_agi.place(
+    def create_agilent(self):
+        self.BT_agi = tk.Button(self, text="BT agi", command=self.print_it)
+        SEL_1 = tk.StringVar(master=self)
+        SEL_2 = tk.StringVar(master=self)
+        SEL_3 = tk.StringVar(master=self)
+        SEL_4 = tk.StringVar(master=self)
+        # Stopped here!
+        # Stopped here!
+        # Stopped here!
+        # Stopped here!
+        # Stopped here!
+
+    def place_agilent(self):
+        self.BT_agi.place(
             relx=self.relx,
-            rely=self.rely + 0.2,
+            rely=self.rely,
             relwidth=self.button_width,
             relheight=self.button_height,
         )
@@ -201,7 +270,7 @@ class CardFrame(tk.Frame):
         )
 
     def print_it(self):
-        print(self.winfo_children()[0])
+        print(self.winfo_children())
 
 
 def main():
