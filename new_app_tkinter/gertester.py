@@ -6,7 +6,7 @@ class Application(tk.Tk):
         super().__init__()
         self.wm_title("GerTester")
         self.configure(bg="blue")
-        self.geometry("600x600")
+        self.geometry("1200x700")
         MainWindown(self)
 
 
@@ -166,6 +166,7 @@ class MainWindown(tk.Canvas):
             print("CardFrame was not initiated, add card frame")
 
     def validate_data(self):
+        print(self.winfo_children())
         print("Implement validate_data")
         pass
 
@@ -175,12 +176,14 @@ class MainWindown(tk.Canvas):
 
 
 class CardFrame(tk.Frame):
-    resources = ["Agilent 34410A", "ClimaEvent 340C"]
-    list_widgets = []
+    list_resources = ["Agilent 34410A", "ClimaEvent 340C"]
+    resource = ""
     button_width = 1
     button_height = 0.2
     option_menu_width = 1
     option_menu_height = 0.2
+    frame_width = 1
+    frame_height = 0.8
     relx = 0.0
     rely = 0.0
 
@@ -200,9 +203,10 @@ class CardFrame(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
+        self.frame_for_resource = tk.Frame(master=self)
         self.selected_resource = tk.StringVar()
         self.resource_menu = tk.OptionMenu(
-            self, self.selected_resource, *self.resources
+            self, self.selected_resource, *self.list_resources
         )
         self.place_widgets()
         self.trace_variables()
@@ -219,6 +223,17 @@ class CardFrame(tk.Frame):
             height=self.option_menu_height,
             place_right=False,
         )
+        self.frame_for_resource.place(
+            relx=self.relx,
+            rely=self.rely,
+            relwidth=self.frame_width,
+            relheight=self.frame_height,
+        )
+        self.correct_positioning(
+            width=self.frame_width,
+            height=self.frame_height,
+            place_right=False,
+        )
 
     def trace_variables(self):
         self.selected_resource.trace_add(
@@ -229,48 +244,129 @@ class CardFrame(tk.Frame):
         )
 
     def validate(self, selected_resource):
-        selected_resource = selected_resource.get()
-        print(selected_resource)
-        self.on_change_selected_resource()
+        resource_name = selected_resource.get()
+        if self.resource == "":
+            self.on_change_selected_resource(resource_name)
+        elif self.resource != resource_name:
+            self.delete_resource(resource_name)
+        else:
+            print("Resource was not changed")
 
-    def on_change_selected_resource(self):
-        tinta = self.selected_resource.get()
-        if tinta == self.resources[0]:
-            self.create_agilent()
-        elif tinta == self.resources[1]:
-            self.create_kuni()
+    def delete_resource(self, resource_name):
+        for widget in self.frame_for_resource.winfo_children():
+            widget.destroy()
+        self.on_change_selected_resource(resource_name)
 
-    def create_agilent(self):
-        self.BT_agi = tk.Button(self, text="BT agi", command=self.print_it)
-        SEL_1 = tk.StringVar(master=self)
-        SEL_2 = tk.StringVar(master=self)
-        SEL_3 = tk.StringVar(master=self)
-        SEL_4 = tk.StringVar(master=self)
-        # Stopped here!
-        # Stopped here!
-        # Stopped here!
-        # Stopped here!
-        # Stopped here!
+    def on_change_selected_resource(self, resource_name):
+        if resource_name == self.list_resources[0]:
+            self.resource = resource_name
+            Agilent34410A(card_frame=self.frame_for_resource)
+        elif resource_name == self.list_resources[1]:
+            self.resource = resource_name
+            ClimaEvent340C(card_frame=self.frame_for_resource)
 
-    def place_agilent(self):
-        self.BT_agi.place(
+    def print_it(self):
+        print(self.winfo_children())
+
+
+class Agilent34410A(tk.Frame):
+    agi_visa = ["a", "b", "c"]
+    agi_range = ["1", "2", "3"]
+    agi_config = ["DC", "AC"]
+    agi_res = ["Big", "Small"]
+    option_menu_width = 1
+    option_menu_height = 0.2
+    relx = 0.0
+    rely = 0.0
+
+    def correct_positioning(
+        self, width: float, height: float, place_right: bool
+    ) -> None:
+        if place_right == True:
+            self.rely = 0
+            self.relx += width
+        else:
+            self.rely += height
+
+    def __init__(self, card_frame):
+        super().__init__(master=card_frame)
+        self.pack(fill="both", expand=True, side="left")
+        self.config(bg="green")
+        self.create_widgets()
+        self.place_widgets()
+
+    def create_widgets(self):
+        self.selected_visa = tk.StringVar()
+        self.selected_range = tk.StringVar()
+        self.selected_configuration = tk.StringVar()
+        self.selected_resolution = tk.StringVar()
+        self.visa_menu = tk.OptionMenu(self, self.selected_visa, *self.agi_visa)
+        self.range_menu = tk.OptionMenu(self, self.selected_range, *self.agi_range)
+        self.config_menu = tk.OptionMenu(self, self.selected_configuration, *self.agi_config)
+        self.res_menu = tk.OptionMenu(self, self.selected_resolution, *self.agi_res)
+
+    def place_widgets(self):
+        self.visa_menu.place(
             relx=self.relx,
             rely=self.rely,
-            relwidth=self.button_width,
-            relheight=self.button_height,
+            relwidth=self.option_menu_width,
+            relheight=self.option_menu_height,
         )
-
-    def create_kuni(self):
-        Bt_agi = tk.Button(self, text="BT Kuni", command=self.print_it)
-        Bt_agi.place(
+        self.correct_positioning(
+            width=self.option_menu_width,
+            height=self.option_menu_height,
+            place_right=False,
+        )
+        self.range_menu.place(
             relx=self.relx,
-            rely=self.rely + 0.2,
-            relwidth=self.button_width,
-            relheight=self.button_height,
+            rely=self.rely,
+            relwidth=self.option_menu_width,
+            relheight=self.option_menu_height,
+        )
+        self.correct_positioning(
+            width=self.option_menu_width,
+            height=self.option_menu_height,
+            place_right=False,
+        )
+        self.config_menu.place(
+            relx=self.relx,
+            rely=self.rely,
+            relwidth=self.option_menu_width,
+            relheight=self.option_menu_height,
+        )
+        self.correct_positioning(
+            width=self.option_menu_width,
+            height=self.option_menu_height,
+            place_right=False,
+        )
+        self.res_menu.place(
+            relx=self.relx,
+            rely=self.rely,
+            relwidth=self.option_menu_width,
+            relheight=self.option_menu_height,
+        )
+        self.correct_positioning(
+            width=self.option_menu_width,
+            height=self.option_menu_height,
+            place_right=False,
         )
 
     def print_it(self):
         print(self.winfo_children())
+
+    def option_menu_values(self):
+        selection_list = []
+        selection_list.append(self.selected_visa.get())
+        selection_list.append(self.selected_range.get())
+        selection_list.append(self.selected_configuration.get())
+        selection_list.append(self.selected_resolution.get())
+        return selection_list
+
+class ClimaEvent340C(tk.Frame):
+    def __init__(self, card_frame):
+        super().__init__(master=card_frame)
+        self.pack(fill="both", expand=True, side="left")
+        self.config(bg="red")
 
 
 def main():
