@@ -166,8 +166,89 @@ class MainWindown(tk.Canvas):
             print("CardFrame was not initiated, add card frame")
 
     def validate_data(self):
-        print(self.winfo_children())
-        print("Implement validate_data")
+        frame_list = []
+        parameters_list = []
+        frame_list = self.get_frame_list()
+        print(frame_list)
+        if self.all_resources_selected(frame_list) == True:
+            parameter_dict = self.get_parameter_dict(frame_list)
+            print(parameter_dict)
+            if self.all_parameters_selected() == True:
+                print("all parameters selected")
+            else:
+                print("select all parameters in the frames")
+            print("all seleceted")
+        else:
+            print("Not selected")
+
+    def get_frame_list(self) -> list:
+        frame_list = []
+        """Get all selected_resource inside the frames in self.canvas_for_frames
+        To get a better understading use:
+        self.winfo_children()
+        self.winfo_children()[0]
+        self.winfo_children()[0].winfo_children()
+        self.winfo_children()[0].winfo_children()[0].selected_resource.get()
+        """
+        for frame in self.winfo_children()[0].winfo_children():
+            resource_name = frame.selected_resource.get()
+            frame_list.append(resource_name)
+        return frame_list
+
+    def all_resources_selected(self, frame_list) -> bool:
+        for frame in frame_list:
+            if frame == "":
+                return False
+            else:
+                return True
+
+    def get_parameter_dict(self, frame_list) -> dict:
+        """Get all values inside the Optionsmenu/Entry/etc... inside the frames in self.canvas_for_frames
+        To get a better understading read self.get_frame_list or use the command bellow with class Agilent34410A(tk.Frame)::
+        print(self.winfo_children()[0].winfo_children()[0].winfo_children()[0].winfo_children()[0].selected_visa.get())
+        """
+        # STOPED HERE ON parameter_dict
+        card_frame_number = 0
+        numb = 0
+        parameter_dict = {}
+        for resource in frame_list:
+            if resource == CardFrame.list_resources[0]:
+                one = (
+                    self.winfo_children()[0]
+                    .winfo_children()[card_frame_number]
+                    .winfo_children()[0]
+                    .winfo_children()[0]
+                    .selected_visa.get()
+                )
+                two = (
+                    self.winfo_children()[0]
+                    .winfo_children()[card_frame_number]
+                    .winfo_children()[0]
+                    .winfo_children()[0]
+                    .selected_range.get()
+                )
+                three = (
+                    self.winfo_children()[0]
+                    .winfo_children()[card_frame_number]
+                    .winfo_children()[0]
+                    .winfo_children()[0]
+                    .selected_configuration.get()
+                )
+                four = (
+                    self.winfo_children()[0]
+                    .winfo_children()[card_frame_number]
+                    .winfo_children()[0]
+                    .winfo_children()[0]
+                    .selected_resolution.get()
+                )
+                print(one, two, three, four)
+            elif resource == CardFrame.list_resources[1]:
+                pass
+            else:
+                print("Unkown Resource")
+            card_frame_number += 1
+
+    def all_parameters_selected(self) -> bool:
         pass
 
     def stop_measure(self):
@@ -290,7 +371,7 @@ class Agilent34410A(tk.Frame):
 
     def __init__(self, card_frame):
         super().__init__(master=card_frame)
-        self.pack(fill="both", expand=True, side="left")
+        self.pack(fill="both", expand=True)
         self.config(bg="green")
         self.create_widgets()
         self.place_widgets()
@@ -302,7 +383,9 @@ class Agilent34410A(tk.Frame):
         self.selected_resolution = tk.StringVar()
         self.visa_menu = tk.OptionMenu(self, self.selected_visa, *self.agi_visa)
         self.range_menu = tk.OptionMenu(self, self.selected_range, *self.agi_range)
-        self.config_menu = tk.OptionMenu(self, self.selected_configuration, *self.agi_config)
+        self.config_menu = tk.OptionMenu(
+            self, self.selected_configuration, *self.agi_config
+        )
         self.res_menu = tk.OptionMenu(self, self.selected_resolution, *self.agi_res)
 
     def place_widgets(self):
@@ -351,21 +434,11 @@ class Agilent34410A(tk.Frame):
             place_right=False,
         )
 
-    def print_it(self):
-        print(self.winfo_children())
-
-    def option_menu_values(self):
-        selection_list = []
-        selection_list.append(self.selected_visa.get())
-        selection_list.append(self.selected_range.get())
-        selection_list.append(self.selected_configuration.get())
-        selection_list.append(self.selected_resolution.get())
-        return selection_list
 
 class ClimaEvent340C(tk.Frame):
     def __init__(self, card_frame):
         super().__init__(master=card_frame)
-        self.pack(fill="both", expand=True, side="left")
+        self.pack(fill="both", expand=True)
         self.config(bg="red")
 
 
