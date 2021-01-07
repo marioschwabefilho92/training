@@ -1,0 +1,23 @@
+#title{
+    color: blue;
+    text-align: center;
+    background: linear-gradient(35deg, #CCFFFF, #FFCCCC);
+    border-radius: 20px;
+    margin: 10px 10px 10px 250px;
+    width: 500px;
+}
+
+#image {
+    position: relative;
+    width: 20%;
+    height: 20%;
+}
+
+#img-caption{
+    text-align: center;
+}
+
+#cats-text{
+    text-align: left;
+    background: linear-gradient(50deg, #FFCCCC,red);
+}
