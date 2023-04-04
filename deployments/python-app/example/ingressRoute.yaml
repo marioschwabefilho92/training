@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: cm-client-ingressroute
+  namespace: cm
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: PathPrefix(`/`)
+    services:
+    - kind: Service
+      name: cm-client-svc
+      port: 8080
+  tls:
+    secretName: cm-central.app.corpintra.net

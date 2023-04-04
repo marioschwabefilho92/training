@@ -1,18 +1,17 @@
-#kubectl apply -f app-deployment.yml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  labels:
+    app.kubernetes.io/instance: python-app
+    app.kubernetes.io/name: python-app
   name: python-app
   namespace: testing
-  labels:
-    app.kubernetes.io/name: python-app
-    app.kubernetes.io/instance: python-app
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
-      app.kubernetes.io/name: python-app
       app.kubernetes.io/instance: python-app
+      app.kubernetes.io/name: python-app
   template:
     metadata:
       labels:

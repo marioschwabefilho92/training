@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/instance: cm-client
+    app.kubernetes.io/name: cm-client
+  name: cm-client
+  namespace: cm
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: cm-client
+      app.kubernetes.io/name: cm-client
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: cm-client
+        app.kubernetes.io/name: cm-client
+    spec:
+      containers:
+        image: registry.app.corpintra.net/cm/cm-client:9.0.0_26e18d1
+        imagePullPolicy: IfNotPresent
+        name: cm-client
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP

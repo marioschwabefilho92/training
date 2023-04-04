@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/instance: cm-client
+    app.kubernetes.io/name: cm-client
+  name: cm-client-networkpolicy
+  namespace: cm
+spec:
+  ingress:
+  - ports:
+    - port: 8080
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: cm-client
+      app.kubernetes.io/name: cm-client

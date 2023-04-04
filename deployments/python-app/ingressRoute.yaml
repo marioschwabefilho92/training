@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: python-app-ingressroute
+  namespace: testing
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: PathPrefix(`/`)
+    services:
+    - kind: Service
+      name: python-app-service
+      port: 5000

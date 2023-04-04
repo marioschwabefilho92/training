@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: python-app-networkpolicy
+  namespace: testing
+  labels:
+    app.kubernetes.io/name: python-app
+    app.kubernetes.io/instance: python-app
+    app.kubernetes.io/version: "1.0"
+spec:
+  ingress:
+  - ports:
+    - port: 5000
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: python-app
+      app.kubernetes.io/instance: python-app
