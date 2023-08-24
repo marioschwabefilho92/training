@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <div class="container">
+    <head>
+        <title>Survey Website - Custom</title>
+        <h1 id="title" class="text-center">Survey Form</h1>
+        <p id="description" class="description text-center">Thank you for helping with the survey</p>
+        <link href="CSS\surveywebsite.css" rel="stylesheet">
+    </head>
+    <body>
+        <form id="survey-form">
+            <div class="form-group">
+                <label id="name-label" for="name">Name</label>
+                <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    class="form-control"
+                    placeholder="Enter your name"
+                    required
+                />
+            </div>
+            <div class="form-group">
+                <label id="email-label" for="email">Email</label>
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    class="form-control"
+                    placeholder="Enter your Email"
+                    required
+                />
+            </div>
+            <div class="form-group">
+                <label id="age-label" for="age">Age</label>
+                <input
+                    type="number"
+                    name="age"
+                    id="number"
+                    min="10"
+                    max="99"
+                    class="form-control"
+                    placeholder="Age"
+                    required
+                />
+            </div>
+            <div class="form-group">
+                <p>Which is your favorite food?</p>
+                <select id="dropdown" name="role" class="form-group" required>
+                    <option disabled selected value>Select Food</option>
+                    <option value="vegetables">Vegetables</option>
+                    <option value="meat">Meat</option>
+                    <option value="fruits">Fruits</option>
+                    <option value="other">Others</option>
+                </select>
+            </div>
+
+        </form>
+    </body>
+    </div>
+</html>

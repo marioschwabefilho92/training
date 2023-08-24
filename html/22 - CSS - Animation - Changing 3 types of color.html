@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Changing 3 Types of Colors</title>
+    </head>
+    <body>
+        <style>
+            div {
+              height: 40px;
+              width: 70%;
+              background: black;
+              margin: 50px auto;
+              border-radius: 5px;
+            }
+          
+            #rect {
+              animation-name: rainbow;
+              animation-duration: 4s;
+            }
+          
+          @keyframes rainbow {
+            0% {
+              background-color: 0000FF;
+            }
+            50% {
+              background-color: 00FF00;
+            }
+            100% {
+              background-color: FFF000;
+            }
+          }
+          </style>
+          <div id="rect"></div>
+    </body>
+</html>
