@@ -1,0 +1,5 @@
+include ChangeLog.rst
+include README.rst
+include setup.*
+recursive-include first_launch/locale *
+recursive-include first_launch/icons *
