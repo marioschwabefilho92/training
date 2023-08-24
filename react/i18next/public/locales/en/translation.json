@@ -1,0 +1,14 @@
+{
+  "simple": {
+    "text1": "I am Text 1",
+    "text2": "Am 2"
+  },
+  "components": {
+    "UsingTComponent": {
+      "title": "I am the UsingTComponent inside components folder"
+    },
+    "UsingTransComponent": {
+      "title": "I am the UsingTransComponent inside components folder"
+    }
+  }
+}
